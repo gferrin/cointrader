@@ -6,7 +6,7 @@
   "scripts": {
     "prepublish": "coffee --output lib --compile src"
   },
-  "author": "",
+  "author": "Gabriel Ferrin",
   "license": "ISC",
   "dependencies": {
     "moment": "^2.9.0",
@@ -19,7 +19,8 @@
   },
   "keywords": [
     "bitcoin",
-    "cointrader"
+    "cointrader",
+    "exchange"
   ],
   "bugs": {
     "url": "https://github.com/gferrin/cointrader/issues"
