@@ -8,8 +8,8 @@ module.exports = class CoinTrader
 
 	constructor: (public_key, private_key, secret) ->
 
-		@url = 'https://www.cointrader.net/api4/'
-		# @url =  'https://sandbox.cointrader.net/api4/'
+		# @url = 'https://www.cointrader.net/api4/'
+		@url =  'https://sandbox.cointrader.net/api4/'
 		@secret = secret
 		@public_key = public_key
 		@private_key = private_key
@@ -57,11 +57,18 @@ module.exports = class CoinTrader
 		if @secret?
 			payload['secret'] = @secret
 
-		for key, value of params
-			payload[key] = value
+		try 
+			for key, value of params
+				# convert all values to strings
+				if typeof value isnt 'string'
+					value = value.toString()
 
-		payload_string = new Buffer(JSON.stringify(payload))
-		auth_hash = crypto.createHmac("sha256", @private_key).update(payload_string).digest('hex')
+				payload[key] = value
+
+			payload_string = new Buffer(JSON.stringify(payload))
+			auth_hash = crypto.createHmac("sha256", @private_key).update(payload_string).digest('hex')
+		catch err
+			return cb(err)
 
 		headers = 
 			'Accept': 'application/json'
@@ -198,8 +205,135 @@ module.exports = class CoinTrader
 	# ###### AUTHENTICATED REQUESTS #######
 	# #####################################   
 
+	balance: (cb) ->
 
+		path = 'account/balance'
 
+		@private_request(path, {}, cb)
+
+	fees: (cb) ->
+
+		path = 'account/fees'
+
+		@private_request(path, {}, cb)
+
+	list_bank_account: (cb) ->
+
+		path = 'account/listbank'
+
+		@private_request(path, {}, cb)
+
+	deposit_address: (cb) ->
+
+		path = 'account/btcaddress'
+
+		@private_request(path, {}, cb)
+
+	withdraw: (type, transfer_method, id_or_address, amount, cb) ->
+
+		try 
+			path = 'account/withdraw'	
+			map = 
+				btc: 'btc_address'
+				fiat: 'bank_account_id'	
+
+			params = 
+				transfer_method: 'transfer_method'
+				amount: amount
+
+			if map[type]?
+				return cb(new Error('bad type'))
+
+			params[map[type]] = id_or_address
+
+			@private_request(path, params, cb)
+		catch err
+			return cb(err)
+
+	account_history: (symbol, cb) ->
+
+		path = 'account/history'
+		params =
+			symbol: symbol
+
+		@private_request(path, params, cb)
+
+	limit_order: (type, currency_pair, total_quantity, price, cb) ->
+
+		if type isnt 'buy' and type isnt 'sell'
+			return cb(new Error('bad type - options are buy and sell'))
+
+		try 
+			path = 'order/' + currency_pair.toUpperCase() + '/' + type
+			params = 
+				total_quantity: total_quantity
+				price: price
+
+			@private_request(path, params, cb)
+		catch err
+			return cb(err)
+
+	orders: (currency_pair, cb) ->
+
+		try 
+			path = 'order/' + currency_pair.toUpperCase() + '/list'
+
+			@private_request(path, {}, cb)
+		catch err
+			return cb(err)
+
+	cancel_order: (currency_pair, order_id, cb) ->
+
+		try 
+			path = 'order/' + currency_pair.toUpperCase() + '/cancel'
+
+			params = 
+				order_id: order_id
+
+			@private_request(path, params, cb)
+		catch err
+			return cb(err)
+
+	cancel_all_orders: (currency_pair, cb) ->
+
+		try 
+			path = 'order/' + currency_pair.toUpperCase() + '/cancelall'
+
+			@private_request(path, {}, cb)
+		catch err
+			return cb(err)
+
+	market_order: (type, currency_pair, total_amount, cb) ->
+
+		map = 
+			buy: 'marketbuy'
+			sell: 'marketsell'
+
+		if not map[type]?
+			return cb(new Error('bad type - options are buy and sell'))
+
+		try 
+			path = 'order/' + currency_pair.toUpperCase() + '/' + map[type]
+			params = 
+				total_amount: total_amount
+
+			@private_request(path, params, cb)
+		catch err
+			return cb(err)
+
+	trade_history: (currency_pair, options, cb) ->
+
+		if typeof options is 'function'
+			cb = options
+			options = {}
+
+		try
+			path = 'account/tradehistory/' + currency_pair.toUpperCase()
+
+			@private_request(path, options, cb)
+		catch err
+			return cb(err)
+		
 
 
 
