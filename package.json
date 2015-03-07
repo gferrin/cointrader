@@ -1,0 +1,28 @@
+{
+  "name": "cointrader",
+  "version": "0.0.1",
+  "description": "nodejs interface for CoinTrader bitcoin exchange",
+  "main": "lib/cointrader.js",
+  "scripts": {
+    "prepublish": "coffee --output lib --compile src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.9.0",
+    "request": "^2.53.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gferrin/cointrader.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "cointrader"
+  ],
+  "bugs": {
+    "url": "https://github.com/gferrin/cointrader/issues"
+  },
+  "homepage": "https://github.com/gferrin/cointrader"
+}
