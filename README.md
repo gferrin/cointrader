@@ -8,6 +8,7 @@ This is a node.js wrapper for the CoinTrader [API](http://docs.cointrader.apiary
 ```js
 var CoinTrader = require('cointrader');
 
+// secret only needs to be passed if you used one to create you keys
 var cointrader = new CoinTrader(public_key, private_key, secret);
 
 cointrader.limit_order("buy", "XBTCAD", 1, 300, function(err, order_id){
