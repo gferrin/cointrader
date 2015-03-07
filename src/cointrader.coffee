@@ -8,8 +8,8 @@ module.exports = class CoinTrader
 
 	constructor: (public_key, private_key, secret) ->
 
-		# @url = 'https://www.cointrader.net/api4/'
-		@url =  'https://sandbox.cointrader.net/api4/'
+		@url = 'https://www.cointrader.net/api4/'
+		# @url =  'https://sandbox.cointrader.net/api4/'
 		@secret = secret
 		@public_key = public_key
 		@private_key = private_key
@@ -94,7 +94,105 @@ module.exports = class CoinTrader
 	#####################################  
 	symbols: (cb) ->
 
-		@public_request ''
+		@public_request('stats/symbol', cb)
+
+	daily_stats: (currency_pair, cb) ->
+
+		path = 'stats/daily/'
+
+		if typeof currency_pair is 'function'
+			cb = currency_pair
+		else 
+			try 
+				path += currency_pair.toUpperCase()
+			catch err
+				return cb(err)
+
+		@public_request(path, cb)
+
+	weekly_stats: (currency_pair, cb) ->
+
+		path = 'stats/weekly/'
+
+		if typeof currency_pair is 'function'
+			cb = currency_pair
+		else 
+			try 
+				path += currency_pair.toUpperCase()
+			catch err
+				return cb(err)
+
+		@public_request(path, cb)
+
+	open_orders: (currency_pair, type, limit, cb) ->
+
+		try 
+			if typeof limit is 'function'
+				cb = limit
+				path = 'stats/orders/' + currency_pair + '/' + type
+			else 
+				path = 'stats/orders/' + currency_pair + '/' + type + '/' + limit
+			
+			@public_request(path, cb)
+		catch err
+			return cb(err)
+
+	inside: (type, currency_pair, cb) ->
+
+		map = 
+			buy: 'high'
+			sell: 'low'
+
+		if not map[type]?
+			return cb(new Error('bad type'))
+
+		path = 'stats/' + map[type] + '/'	
+
+		if typeof currency_pair is 'function'
+			cb = currency_pair
+		else 
+			try 
+				path += currency_pair.toUpperCase()
+			catch err
+				return cb(err)
+
+		@public_request(path, cb)
+
+
+	weighted_average: (type, amount, currency_pair, cb) ->
+
+		map = 
+			buy: 'buyprice'
+			sell: 'sellprice'
+
+		if not map[type]?
+			return cb(new Error('bad type'))
+
+		try 
+			path = 'stats/' + map[type] + '/' + currency_pair.toUpperCase() + '/' + amount
+		catch err
+			return cb(err)
+
+		@public_request(path, cb)
+
+	trades: (currency_pair, limit, offset, cb) ->
+
+		try 
+			path = 'stats/trades/' + currency_pair.toUpperCase() + '/' + limit + '/' + offset
+
+			@public_request(path, cb)
+		catch err
+			return cb(err)
+
+	market_data: (currency_pair, limit, offset, cb) ->
+
+		try 
+			path = 'stats/market/' + currency_pair.toUpperCase() + '/' + limit + '/' + offset
+
+			@public_request(path, cb)
+		catch err
+			return cb(err)
+
 
 	# #####################################
 	# ###### AUTHENTICATED REQUESTS #######
