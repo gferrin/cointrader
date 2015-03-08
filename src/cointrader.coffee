@@ -8,8 +8,11 @@ module.exports = class CoinTrader
 
 	constructor: (public_key, private_key, secret) ->
 
-		# @url = 'https://www.cointrader.net/api4/'
-		@url =  'https://sandbox.cointrader.net/api4/'
+		if process.env.COINTRADER is 'sandbox'
+			@url =  'https://sandbox.cointrader.net/api4/'
+		else 
+			@url = 'https://www.cointrader.net/api4/'
+			
 		@secret = secret
 		@public_key = public_key
 		@private_key = private_key

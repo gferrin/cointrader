@@ -16,6 +16,12 @@ cointrader.limit_order("buy", "XBTCAD", 1, 300, function(err, order_id){
 });
 ```
 
+### Sandbox
+
+If you would like to run the API in sandbox mode then run your code with the environment variable `COINTRADER=sandbox`
+
+Here is the [link](https://sandbox.cointrader.net/user/registration) to register for a sandbox account.
+
 ## Functions
 
 `symbols(cb)`
