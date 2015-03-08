@@ -1,6 +1,6 @@
 {
   "name": "cointrader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "nodejs interface for CoinTrader bitcoin exchange",
   "main": "lib/cointrader.js",
   "scripts": {
@@ -20,7 +20,10 @@
   "keywords": [
     "bitcoin",
     "cointrader",
-    "exchange"
+    "exchange",
+    "CoinTrader",
+    "Coin Trader",
+    "coin trader"
   ],
   "bugs": {
     "url": "https://github.com/gferrin/cointrader/issues"
