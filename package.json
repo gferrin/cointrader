@@ -1,6 +1,6 @@
 {
   "name": "cointrader",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "nodejs interface for CoinTrader bitcoin exchange",
   "main": "lib/cointrader.js",
   "scripts": {
