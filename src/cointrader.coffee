@@ -241,7 +241,7 @@ module.exports = class CoinTrader
 				fiat: 'bank_account_id'	
 
 			params = 
-				transfer_method: 'transfer_method'
+				transfer_method: transfer_method
 				amount: amount
 
 			if not map[type]?
