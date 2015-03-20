@@ -244,7 +244,7 @@ module.exports = class CoinTrader
 				transfer_method: 'transfer_method'
 				amount: amount
 
-			if map[type]?
+			if not map[type]?
 				return cb(new Error('bad type'))
 
 			params[map[type]] = id_or_address
