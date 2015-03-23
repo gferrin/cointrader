@@ -91,11 +91,7 @@ module.exports = class CoinTrader
 				if err || (response.statusCode != 200 && response.statusCode != 400)
 					return cb new Error(err ? response.statusCode)
 				
-				if body['success']
-					return cb(null, body['data'])
-				else 
-					cb(new Error(body['message']))
-
+				cb(null, body)
 			catch err
 				return cb(err)
 
