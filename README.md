@@ -50,7 +50,7 @@ Here is the [link](https://sandbox.cointrader.net/user/registration) to register
 
 `deposit_address(cb)`
 
-`withdraw(type, transfer_method, id_or_address, amount, cb)`
+`withdraw('btc' || 'fiat', transfer_method, id_or_address, amount, cb)`
 
 `account_history(symbol, cb)`
 
